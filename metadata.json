@@ -1,0 +1,7 @@
+{
+  "name": "NeedBook",
+  "description": "Books when you need them most. A student-only, need-first academic book exchange app for urgent peer-to-peer sharing.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
