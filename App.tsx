@@ -213,3 +213,23 @@ const App: React.FC = () => {
   };
 
   // Don't show Layout for onboarding
+  if (view === 'onboarding') {
+    return renderContent();
+  }
+
+  return (
+    <Layout 
+      activeView={view} 
+      setView={setView} 
+      title={getTitle()} 
+      darkMode={darkMode} 
+      toggleDarkMode={toggleDarkMode}
+      userTag={userStats.tag}
+      points={userStats.points}
+    >
+      {renderContent()}
+    </Layout>
+  );
+};
+
+export default App;
