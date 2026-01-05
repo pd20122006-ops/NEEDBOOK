@@ -11,13 +11,15 @@ import Rewards from './components/Rewards';
 import Feedback from './components/Feedback';
 import Verification from './components/Verification';
 import Onboarding from './components/Onboarding';
-import { AppView, BookRequest, BookListing, UserStats, UserTag, FeedbackData, UserProfile } from './types';
+import { AppView, BookRequest, BookListing, UserStats, UserTag, FeedbackData, UserProfile, Language } from './types';
 import { MOCK_REQUESTS, MOCK_LISTINGS } from './constants.tsx';
+import { translations } from './translations';
 
 const App: React.FC = () => {
   const [view, setView] = useState<AppView>('onboarding');
   const [isVerified, setIsVerified] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [language, setLanguage] = useState<Language>('en');
   
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -29,9 +31,11 @@ const App: React.FC = () => {
   const [listings, setListings] = useState<BookListing[]>(MOCK_LISTINGS);
   const [activeChat, setActiveChat] = useState<{name: string, title: string, image?: string, contact?: string} | null>(null);
 
+  const t = translations[language];
+
   // Rewards State
   const [userStats, setUserStats] = useState<UserStats>({
-    points: 0, // Start fresh for new users
+    points: 0,
     tag: 'Book Starter',
     successfulExchanges: 0,
     booksLent: 0,
@@ -49,7 +53,6 @@ const App: React.FC = () => {
     }
   }, [darkMode]);
 
-  // Recalculate Tag when points change
   useEffect(() => {
     const calculateTag = (pts: number): UserTag => {
       if (pts >= 501) return 'Book Champion';
@@ -77,9 +80,10 @@ const App: React.FC = () => {
     });
   };
 
-  const handleOnboardingComplete = (profile: UserProfile) => {
+  const handleOnboardingComplete = (profile: UserProfile, lang: Language) => {
     setUserProfile(profile);
-    awardPoints(10); // Reward for signing up
+    setLanguage(lang);
+    awardPoints(10); 
     setView('verify');
   };
 
@@ -198,21 +202,20 @@ const App: React.FC = () => {
 
   const getTitle = () => {
     switch (view) {
-      case 'home': return 'Urgent Requests';
-      case 'request': return 'Need a Book?';
-      case 'list': return 'List a Book';
-      case 'matches': return 'Nearby Matches';
+      case 'home': return t.home;
+      case 'request': return t.request;
+      case 'list': return t.list;
+      case 'matches': return t.matches;
       case 'chat': return 'Messages';
-      case 'verify': return 'Verification';
-      case 'buddy': return 'Buddy Support';
-      case 'rewards': return 'Your Rank';
-      case 'feedback': return 'Share Feedback';
-      case 'onboarding': return 'Welcome to NeedBook';
+      case 'verify': return t.verify;
+      case 'buddy': return t.buddy;
+      case 'rewards': return t.rewards;
+      case 'feedback': return 'Feedback';
+      case 'onboarding': return 'NeedBook';
       default: return 'NeedBook';
     }
   };
 
-  // Don't show Layout for onboarding
   if (view === 'onboarding') {
     return renderContent();
   }
@@ -226,6 +229,7 @@ const App: React.FC = () => {
       toggleDarkMode={toggleDarkMode}
       userTag={userStats.tag}
       points={userStats.points}
+      language={language}
     >
       {renderContent()}
     </Layout>

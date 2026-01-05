@@ -2,6 +2,7 @@
 export type UrgencyLevel = 'High' | 'Medium';
 export type ExchangeMode = 'Buy' | 'Borrow' | 'Exchange' | 'Donate';
 export type BookCondition = 'New' | 'Good' | 'Used' | 'Highlighted';
+export type Language = 'en' | 'bn' | 'hi';
 
 export type UserTag = 'Book Starter' | 'Helpful Reader' | 'Campus Contributor' | 'Study Hero' | 'Book Champion';
 
